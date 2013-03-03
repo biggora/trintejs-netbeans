@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.netbeans.modules.trintejs.project;
+package org.netbeans.modules.trintejs.sources;
 
 import java.io.File;
 import javax.swing.JFileChooser;
@@ -49,13 +49,9 @@ public class TrinteJSMVCPanelVisual extends JPanel implements DocumentListener {
         createdFolderTextField = new javax.swing.JTextField();
 
         projectNameLabel.setLabelFor(projectNameTextField);
-        org.openide.awt.Mnemonics.setLocalizedText(projectNameLabel, org.openide.util.NbBundle.getMessage(TrinteJSMVCPanelVisual.class, "TrinteJSMVCPanelVisual.projectNameLabel.text")); // NOI18N
 
         projectLocationLabel.setLabelFor(projectLocationTextField);
-        org.openide.awt.Mnemonics.setLocalizedText(projectLocationLabel, org.openide.util.NbBundle.getMessage(TrinteJSMVCPanelVisual.class, "TrinteJSMVCPanelVisual.projectLocationLabel.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(browseButton, org.openide.util.NbBundle.getMessage(TrinteJSMVCPanelVisual.class, "TrinteJSMVCPanelVisual.browseButton.text")); // NOI18N
-        browseButton.setActionCommand(org.openide.util.NbBundle.getMessage(TrinteJSMVCPanelVisual.class, "TrinteJSMVCPanelVisual.browseButton.actionCommand")); // NOI18N
         browseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 browseButtonActionPerformed(evt);
@@ -63,7 +59,6 @@ public class TrinteJSMVCPanelVisual extends JPanel implements DocumentListener {
         });
 
         createdFolderLabel.setLabelFor(createdFolderTextField);
-        org.openide.awt.Mnemonics.setLocalizedText(createdFolderLabel, org.openide.util.NbBundle.getMessage(TrinteJSMVCPanelVisual.class, "TrinteJSMVCPanelVisual.createdFolderLabel.text")); // NOI18N
 
         createdFolderTextField.setEditable(false);
 

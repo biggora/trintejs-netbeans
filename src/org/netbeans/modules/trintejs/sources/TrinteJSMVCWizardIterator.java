@@ -1,8 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package org.netbeans.modules.trintejs.project;
+package org.netbeans.modules.trintejs.sources;
 
 import java.awt.Component;
 import java.io.ByteArrayInputStream;
@@ -37,7 +33,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 // TODO define position attribute
-@TemplateRegistration(folder = "Project/TrinteJS", displayName = "#TrinteJSMVC_displayName", description = "TrinteJSMVCDescription.html", iconBase = "org/netbeans/modules/trintejs/project/TrinteJSMVC.png", content = "TrinteJSMVCProject.zip")
+@TemplateRegistration(folder = "Project/TrinteJS", displayName = "#TrinteJSMVC_displayName", description = "TrinteJSMVCDescription.html", iconBase = "org/netbeans/modules/trintejs/images/trinte.png", content = "TrinteJSMVCProject.zip")
 @Messages("TrinteJSMVC_displayName=TrinteJS Application")
 public class TrinteJSMVCWizardIterator implements WizardDescriptor./*Progress*/InstantiatingIterator {
 

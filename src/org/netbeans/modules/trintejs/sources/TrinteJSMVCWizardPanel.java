@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.netbeans.modules.trintejs.project;
+package org.netbeans.modules.trintejs.sources;
 
 import java.awt.Component;
 import java.util.HashSet;
@@ -17,8 +17,8 @@ import org.openide.util.NbBundle;
 /**
  * Panel just asking for basic info.
  */
-public class TrinteJSMVCWizardPanel implements WizardDescriptor.Panel,
-        WizardDescriptor.ValidatingPanel, WizardDescriptor.FinishablePanel {
+public class TrinteJSMVCWizardPanel implements WizardDescriptor.Panel<WizardDescriptor>,
+        WizardDescriptor.ValidatingPanel<WizardDescriptor>, WizardDescriptor.FinishablePanel<WizardDescriptor> {
 
     private WizardDescriptor wizardDescriptor;
     private TrinteJSMVCPanelVisual component;
@@ -73,18 +73,6 @@ public class TrinteJSMVCWizardPanel implements WizardDescriptor.Panel,
     }
 
     @Override
-    public void readSettings(Object settings) {
-        wizardDescriptor = (WizardDescriptor) settings;
-        component.read(wizardDescriptor);
-    }
-
-    @Override
-    public void storeSettings(Object settings) {
-        WizardDescriptor d = (WizardDescriptor) settings;
-        component.store(d);
-    }
-
-    @Override
     public boolean isFinishPanel() {
         return true;
     }
@@ -93,5 +81,16 @@ public class TrinteJSMVCWizardPanel implements WizardDescriptor.Panel,
     public void validate() throws WizardValidationException {
         getComponent();
         component.validate(wizardDescriptor);
+    }
+
+    @Override
+    public void readSettings(WizardDescriptor wiz) {
+        wizardDescriptor = wiz;
+        component.read(wizardDescriptor);
+    }
+
+    @Override
+    public void storeSettings(WizardDescriptor wiz) {
+        component.store(wiz);
     }
 }
