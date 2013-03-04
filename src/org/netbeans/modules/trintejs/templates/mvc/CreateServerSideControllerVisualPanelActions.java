@@ -1,6 +1,8 @@
 package org.netbeans.modules.trintejs.templates.mvc;
 
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public final class CreateServerSideControllerVisualPanelActions extends JPanel {
 
@@ -16,6 +18,24 @@ public final class CreateServerSideControllerVisualPanelActions extends JPanel {
         return "Controller Actions";
     }
 
+    public JTable getActionsTable() {
+        return ActionsTable;
+    }
+
+    public static int[] getSelectedRowsModelIndices(JTable table) {
+        if (table == null) {
+            throw new NullPointerException("table == null");
+        }
+
+        int[] selectedRowIndices = table.getSelectedRows();
+        int countSelected = selectedRowIndices.length;
+
+        for (int i = 0; i < countSelected; i++) {
+            selectedRowIndices[i] = table.convertRowIndexToModel(selectedRowIndices[i]);
+        }
+
+        return selectedRowIndices;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -92,13 +112,24 @@ public final class CreateServerSideControllerVisualPanelActions extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddActionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddActionButtonActionPerformed
-        // TODO add your handling code here:
+        DefaultTableModel TableModel = (DefaultTableModel) ActionsTable.getModel();
+        int count = TableModel.getRowCount();
+        String rowName = "action_" + (count + 1);
+
+        TableModel.addRow(new String[]{rowName});
     }//GEN-LAST:event_AddActionButtonActionPerformed
 
     private void RemoveActionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveActionButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_RemoveActionButtonActionPerformed
+        int[] selectedRowIndices = getSelectedRowsModelIndices(ActionsTable);
+        DefaultTableModel tableModel = (DefaultTableModel) ActionsTable.getModel();
+        int countRemoved = 0;
 
+        for (int selectedRowIndex : selectedRowIndices) {
+            int removeIndex = selectedRowIndex - countRemoved;
+            tableModel.removeRow(removeIndex);
+            countRemoved++;
+        }
+    }//GEN-LAST:event_RemoveActionButtonActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable ActionsTable;
     private javax.swing.JButton AddActionButton;

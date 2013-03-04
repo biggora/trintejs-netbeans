@@ -1,16 +1,31 @@
 package org.netbeans.modules.trintejs.templates.mvc;
 
 import java.awt.Component;
+import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.event.ChangeListener;
+import org.netbeans.api.project.Project;
 import org.netbeans.api.templates.TemplateRegistration;
+import org.netbeans.modules.trintejs.json.JSONObject;
+import org.netbeans.modules.trintejs.tools.GeneratorHelper;
+import org.netbeans.modules.trintejs.tools.Inflector;
+import org.netbeans.modules.trintejs.tools.ProjectData;
+import org.netbeans.spi.project.ui.templates.support.Templates;
 import org.openide.WizardDescriptor;
+import org.openide.filesystems.FileObject;
+import org.openide.loaders.DataFolder;
+import org.openide.loaders.DataObject;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle.Messages;
 
@@ -28,6 +43,7 @@ public final class CreateServerSideControllerWizardIterator implements WizardDes
     private int index;
     private WizardDescriptor wizard;
     private List<WizardDescriptor.Panel<WizardDescriptor>> panels;
+    private Project project;
 
     private List<WizardDescriptor.Panel<WizardDescriptor>> getPanels() {
         if (panels == null) {
@@ -58,8 +74,92 @@ public final class CreateServerSideControllerWizardIterator implements WizardDes
 
     @Override
     public Set<?> instantiate() throws IOException {
-        // TODO return set of FileObject (or DataObject) you have created
-        return Collections.emptySet();
+
+        FileObject createdFile = null;
+        String controllerPath = "app/controllers";
+        String viewsPath = "app/views";
+        String addView = "";
+
+        // Read Controller Name from wizard
+        String controllerName = (String) wizard.getProperty(CreateServerSideControllerVisualPanelName.CONTROLLER_NAME);
+        String nameSpace = (String) wizard.getProperty(CreateServerSideControllerVisualPanelName.NAMESPACE);
+        String[] controllerActions = (String[]) wizard.getProperty("controllerActions");
+        // FreeMarker Template will get its variables from HashMap.
+        // HashMap key is the variable name.
+        Map<String, String> options = new HashMap<String, String>();
+
+        //Get the template and convert it:
+        FileObject firstTemplate = Templates.getTemplate(wizard);
+        //Find the second template, based on the first, and convert it:
+        FileObject rootTemplate = firstTemplate.getParent().getFileObject("Others");
+        FileObject secondTemplate = rootTemplate.getFileObject("ViewEmptyTemplate", "ejs");
+        System.out.println("getExistingSourcesFolder: " + firstTemplate.getParent().getPath().toString());
+
+        DataObject cTemplate = DataObject.find(firstTemplate);
+        DataObject vTemplate = DataObject.find(secondTemplate);
+
+        //Get the package:
+        project = Templates.getProject(wizard);
+        FileObject projectDir = project.getProjectDirectory();
+        String projectPath = projectDir.getPath();
+
+        if (!nameSpace.isEmpty() || !nameSpace.equals("")) {
+            addView += nameSpace + "/";
+            controllerPath += "/" + nameSpace;
+            viewsPath += "/" + nameSpace;
+            File ncfp = new File(projectPath + "/" + controllerPath);
+            if (!ncfp.exists()) {
+                ncfp.mkdir();
+            }
+            File nvfp = new File(projectPath + "/" + viewsPath);
+            if (!nvfp.exists()) {
+                nvfp.mkdir();
+            }
+        }
+
+        Inflector inflector = new Inflector();
+        // String SingularControllerName = inflector.singularize(controllerName);
+        String PluralControllerName = inflector.pluralize(controllerName);
+        String CamelControllerName = inflector.camelCase(PluralControllerName, true, null);
+        JSONObject projectData = (JSONObject) ProjectData.getJSON(projectDir.getPath());
+        DateFormat dfor = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        String nowAsString = dfor.format(new Date());
+        String actions = GeneratorHelper.CreateActions(controllerActions, PluralControllerName.toLowerCase());
+
+        viewsPath += "/" + PluralControllerName.toLowerCase();
+
+        File nvtfp = new File(projectPath + "/" + viewsPath);
+        if (!nvtfp.exists()) {
+            nvtfp.mkdir();
+        }
+
+        FileObject cmdf = projectDir.getFileObject(controllerPath);
+        DataFolder cdfl = DataFolder.findFolder(cmdf);
+        FileObject vmdf = projectDir.getFileObject(viewsPath);
+        DataFolder vdfl = DataFolder.findFolder(vmdf);
+
+        options.put("controllerName", CamelControllerName);
+        options.put("basePathPlural", PluralControllerName.toLowerCase());
+        options.put("projectName", projectData.getString("name"));
+        options.put("description", projectData.getString("description"));
+        options.put("version", projectData.getString("version"));
+        options.put("created", nowAsString);
+        options.put("controllerActions", actions);
+        options.put("addView", addView);
+
+        //Define the template from the above,
+        //passing the package, the file name, and the map of strings to the template:
+        DataObject dobj = cTemplate.createFromTemplate(cdfl, CamelControllerName + "Controller", options);
+
+        for (int i = 0; i < controllerActions.length; i++) {
+            vTemplate.createFromTemplate(vdfl, controllerActions[i].toString(), options);
+        }
+
+        //Obtain a FileObject:
+        createdFile = dobj.getPrimaryFile();
+
+        // Return the created file.
+        return Collections.singleton(createdFile);
     }
 
     @Override

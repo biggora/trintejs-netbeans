@@ -3,7 +3,6 @@ package org.netbeans.modules.trintejs.templates.mvc;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.event.ChangeListener;
-import org.netbeans.modules.trintejs.tools.Inflector;
 import org.netbeans.modules.trintejs.ui.ValidationMessages;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
@@ -60,6 +59,10 @@ public class CreateServerSideControllerWizardPanelName implements WizardDescript
         return getComponent().getControllerName();
     }
 
+    private String getNameSpaceFromVisualPanel() {
+        return getComponent().getNameSpace();
+    }
+
     @Override
     public void validate() throws WizardValidationException {
 
@@ -73,14 +76,6 @@ public class CreateServerSideControllerWizardPanelName implements WizardDescript
             throw new WizardValidationException(null, String.format(ValidationMessages.IS_TOO_SHORT.toString(), REPL_TITLE, 3), null);
         } else if (matcher.matches()) {
 
-            Inflector inflector = new Inflector();
-            String SingularModelNameValue = inflector.singularize(modelNameValue);
-
-            if (!modelNameValue.equals(SingularModelNameValue)) {
-                throw new WizardValidationException(null, String.format(ValidationMessages.IS_NOT_SINGULAR.toString(), REPL_TITLE), null);
-            } else {
-                modelNameValue = Character.toUpperCase(modelNameValue.charAt(0)) + modelNameValue.substring(1);
-            }
         } else {
             throw new WizardValidationException(null, String.format(ValidationMessages.IS_NOT_ONLY_CHARACTERS.toString(), REPL_TITLE), null);
         }
@@ -94,5 +89,6 @@ public class CreateServerSideControllerWizardPanelName implements WizardDescript
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty(CreateServerSideControllerVisualPanelName.CONTROLLER_NAME, getModelNameFromVisualPanel());
+        wiz.putProperty(CreateServerSideControllerVisualPanelName.NAMESPACE, getNameSpaceFromVisualPanel());
     }
 }

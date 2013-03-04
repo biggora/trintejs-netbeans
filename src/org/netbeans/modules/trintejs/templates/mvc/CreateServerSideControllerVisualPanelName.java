@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 public final class CreateServerSideControllerVisualPanelName extends JPanel {
 
     static final String CONTROLLER_NAME = "Example";
+    static final String NAMESPACE = "";
 
     /**
      * Creates new form CreateServerSideControllerVisualPanelName
@@ -22,6 +23,9 @@ public final class CreateServerSideControllerVisualPanelName extends JPanel {
         return ControllerNameTextField.getText();
     }
 
+    public String getNameSpace() {
+        return NamespaceTextField.getText();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,10 +36,21 @@ public final class CreateServerSideControllerVisualPanelName extends JPanel {
 
         ControllerNameLabel = new javax.swing.JLabel();
         ControllerNameTextField = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        NamespaceTextField = new javax.swing.JTextField();
 
         org.openide.awt.Mnemonics.setLocalizedText(ControllerNameLabel, org.openide.util.NbBundle.getMessage(CreateServerSideControllerVisualPanelName.class, "CreateServerSideControllerVisualPanelName.ControllerNameLabel.text")); // NOI18N
 
         ControllerNameTextField.setText(org.openide.util.NbBundle.getMessage(CreateServerSideControllerVisualPanelName.class, "CreateServerSideControllerVisualPanelName.ControllerNameTextField.text")); // NOI18N
+
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(CreateServerSideControllerVisualPanelName.class, "CreateServerSideControllerVisualPanelName.jLabel1.text")); // NOI18N
+
+        NamespaceTextField.setText(org.openide.util.NbBundle.getMessage(CreateServerSideControllerVisualPanelName.class, "CreateServerSideControllerVisualPanelName.NamespaceTextField.text")); // NOI18N
+        NamespaceTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NamespaceTextFieldActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -43,9 +58,13 @@ public final class CreateServerSideControllerVisualPanelName extends JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(ControllerNameLabel)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(ControllerNameLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ControllerNameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ControllerNameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+                    .addComponent(NamespaceTextField))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -55,11 +74,22 @@ public final class CreateServerSideControllerVisualPanelName extends JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ControllerNameLabel)
                     .addComponent(ControllerNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(269, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(NamespaceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(238, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void NamespaceTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NamespaceTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_NamespaceTextFieldActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ControllerNameLabel;
     private javax.swing.JTextField ControllerNameTextField;
+    private javax.swing.JTextField NamespaceTextField;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

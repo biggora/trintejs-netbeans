@@ -101,14 +101,9 @@ public final class CreateServerSideModelWizardIterator implements WizardDescript
         String nowAsString = dfor.format(new Date());
         String fields = GeneratorHelper.CreateFields(modelFields);
 
-        System.out.println("projectDir: " + projectDir.getPath());
-        System.out.println("projectData JSONObject to STRING: " + projectData.toString());
-        System.out.println("JSON KEYS: " + projectData.names().toString());
-        System.out.println("projectName 1: " + projectData.getString("name"));
-
         options.put("modelName", CamelModelName);
         options.put("projectName", projectData.getString("name"));
-        options.put("description", projectData.getString("name"));
+        options.put("description", projectData.getString("description"));
         options.put("version", projectData.getString("version"));
         options.put("created", nowAsString);
         options.put("fields", fields);
